@@ -1,14 +1,15 @@
 import React, {FC, useEffect, useState} from 'react';
 import './Products.css';
 import {Product as ProductModel} from '../../model/product';
-import {ProductService} from '../../service/product.service';
-import {getProducts} from '../../service/product.services';
+import {getProducts} from '../../service/product.service';
 import Product from '../product/Product';
 import { QueryClient, QueryClientProvider } from 'react-query'
 import Categories from './Categories'
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import _ from 'lodash';
+import MemoizedCategories from './Categories';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -22,11 +23,8 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 const queryClient = new QueryClient()
-interface ProductsProps {
-    productService: ProductService;
-}
 
-const Products: FC<ProductsProps> = (({productService}) => {
+const Products: FC = (() => {
     const classes = useStyles();
     const [products, setProducts] = useState<ProductModel[]>([]);
     const [categories, setCategories] = useState<string[]>([]);
@@ -37,7 +35,7 @@ const Products: FC<ProductsProps> = (({productService}) => {
 
     useEffect(() => {
       getProducts().then(products => setProducts(products));
-    }, [productService]);
+    }, []);
     
 
     return (
@@ -46,18 +44,18 @@ const Products: FC<ProductsProps> = (({productService}) => {
         <Grid item xs={12}>
           <Paper className={classes.paper}>
             <QueryClientProvider client={queryClient}>
-                <Categories handleChange={handleCategoriesChange}/>
+                <MemoizedCategories handleChange={handleCategoriesChange}/>
             </QueryClientProvider>
            </Paper>
         </Grid>
       </Grid>
       { products.length === 0 ? null :
           <div className='products-container'> 
-            {products.filter(product => !categories || categories.length === 0 || categories.includes(product.category))
+            {products.filter(product =>_.isEmpty(categories) || categories.includes(product.category))
                      .map(product => <Product key={product.id} product={product}/>)}
           </div>}
     </React.Fragment>        
     );
 });
-
-export default Products;
+const MemoizedProducts = React.memo(Products);
+export default MemoizedProducts;

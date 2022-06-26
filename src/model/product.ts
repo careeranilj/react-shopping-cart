@@ -11,10 +11,11 @@ export interface User {
   email:string;
   username:string;
   password:string;
-  name:{
-      firstname:string;
-      lastname:string;
-  }
+  name:UserName;
+}
+export interface UserName {
+  firstname:string;
+  lastname:string;
 }
 
 export interface CategoryProps{

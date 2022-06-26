@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useContext} from 'react';
 import './ShoppingCart.css';
 import { ShoppingContext } from "../../contexts/ShoppingContext"
 import {Product as ProductModel} from '../../model/product';
@@ -6,8 +6,8 @@ import { Types } from "../../reducers/ShoppingReducer"
 
 
 const ShoppingCart: FC = (() => {
-
-    const { state, dispatch } = React.useContext(ShoppingContext)
+    
+    const { state, dispatch } = useContext(ShoppingContext)
     const { counter, products } = state
 
     const removeFromCart = (product: ProductModel) => {

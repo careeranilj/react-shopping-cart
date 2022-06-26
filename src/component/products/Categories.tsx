@@ -1,4 +1,4 @@
-import React, {FC, useImperativeHandle, useState, forwardRef} from 'react';
+import React, { useState} from 'react';
 import { useQuery } from 'react-query'
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
@@ -25,7 +25,7 @@ const Categories = ((props:CategoryProps) => {
 
   if (error) return  <p>'An error has occurred: ' + error.message</p>
     const listItems = data.map((d:string, i:number) =>
-      <ToggleButton value={d}>{d}</ToggleButton>
+      <ToggleButton key={i} value={d}>{d}</ToggleButton>
     );
 
   if(data) return (
@@ -41,4 +41,5 @@ const Categories = ((props:CategoryProps) => {
   return <React.Fragment/>;
 });
 
-export default Categories;
+const MemoizedCategories = React.memo(Categories);
+export default MemoizedCategories;
