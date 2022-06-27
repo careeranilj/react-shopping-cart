@@ -31,7 +31,21 @@ export const shoppingCartReducer : Reducer<ShoppingCartState, ShoppingCartAction
             counter: state.counter - action.payload.quantity, 
             products: [...state.products.filter(product => product.id !== action.payload.id)] 
         }
-
+    case Types.LOGIN: {
+              return {
+                ...state,
+                loggedInUser : action.payload,
+              };
+            }
+    case Types.LOGOUT: {
+              return {
+                ...state,
+                loggedInUser : {firstname:'', lastname : ''}
+              };
+            }
+    case Types.FETCH_LOGGED_IN_USER: {
+              return state;
+            }
     default:
       return state;
   }

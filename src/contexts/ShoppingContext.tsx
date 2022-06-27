@@ -1,35 +1,23 @@
-import * as React from "react"
-import { ShoppingReducer, Actions, State } from '../reducers/ShoppingReducer';
-import { Product } from '../model/product';
+import * as React from "react";
 import { shoppingCartReducer } from "../redux/reducers/shoppingCart";
-import { initialSoppingCartState } from "../redux/shoppingCartState";
-import shoppingCartStore from "../redux/store";
-import { Provider } from 'react-redux';
-
-const initialState = {
- counter: 0,
- products: []
-}
+import { initialSoppingCartState, ShoppingCartState } from "../redux/shoppingCartState";
+import { ShoppingCartActionType } from "../redux/actions";
 
 const ShoppingContext = React.createContext<{
-  state: State;
-  dispatch: React.Dispatch<Actions>;
+  state: ShoppingCartState;
+  dispatch: React.Dispatch<ShoppingCartActionType>;
 }>({
-  state: initialState,
+  state: initialSoppingCartState,
   dispatch: () => null,
 });
 
 const ShoppingProvider: React.FC = ({ children }) => {
 
-  // const [state, dispatch] = React.useReducer(shoppingCartReducer, initialSoppingCartState);
-  const [state, dispatch] = React.useReducer(ShoppingReducer, initialState);
-// const context = React.createContext('');
+  const [state, dispatch] = React.useReducer(shoppingCartReducer, initialSoppingCartState);
 
   return (
     <ShoppingContext.Provider value={{state, dispatch}}>
-    {/* <Provider store={shoppingCartStore}> */}
       {children}
-    {/* </Provider> */}
     </ShoppingContext.Provider>
   )
 }

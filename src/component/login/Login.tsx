@@ -1,4 +1,4 @@
-import React, {FC,useEffect,useReducer,useState} from 'react';
+import React, {FC,useEffect,useState} from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -12,11 +12,10 @@ import Collapse from '@material-ui/core/Collapse';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import _ from 'lodash';
-import shoppingCartStore from '../../redux/store';
-import shoppingCartActions, {ShoppingCartActionType} from '../../redux/actions'
-import { loginReducer } from '../../redux/reducers/login';
-import { initialSoppingCartState } from '../../redux/shoppingCartState';
 import { Types } from '../../redux/actionTypes';
+import { ShoppingContext } from '../../contexts/ShoppingContext';
+import shoppingCartActions from '../../redux/actions';
+
 const loginSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Email is required.'),
   password: Yup.string().required('Password is required.'),
@@ -26,8 +25,8 @@ const Login: FC = (() => {
   const [open, setOpen] = useState(false);
   const [invalidUser, setInvalidUser] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState<string>();
-  const [state, dispatch] = useReducer(loginReducer, initialSoppingCartState);
-  
+  const {state, dispatch } = React.useContext(ShoppingContext);
+
     const handleClickOpen = () => {
       setOpen(true);
     };
@@ -38,8 +37,8 @@ const Login: FC = (() => {
     const authenticate = (email : string, password : string) => { 
       isUserValid(email, password).then(userFound=> {
         if (userFound){
-          setLoggedInUser(`${userFound.name.lastname}, ${userFound.name.firstname}`);
-          shoppingCartStore.dispatch(shoppingCartActions.storeLoginDetails(userFound)); 
+          setLoggedInUser(`${userFound.name.lastname}, ${userFound.name.firstname}`);         
+          dispatch(shoppingCartActions.storeLoginDetails(`${userFound.name.lastname}, ${userFound.name.firstname}`));
         } 
         setOpen(!userFound);
         setInvalidUser(!userFound);
@@ -49,7 +48,6 @@ const Login: FC = (() => {
     }
 
     useEffect(() => {
-      dispatch({type:Types.FETCH_LOGGED_IN_USER});
       if(!_.isEmpty(state.loggedInUser.lastname) && !_.isEmpty(state.loggedInUser.firstname)){
         setLoggedInUser(`${state.loggedInUser.lastname}, ${state.loggedInUser.firstname}`); 
       }

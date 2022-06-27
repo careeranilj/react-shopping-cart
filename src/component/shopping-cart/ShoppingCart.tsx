@@ -2,16 +2,17 @@ import React, {FC, useContext} from 'react';
 import './ShoppingCart.css';
 import { ShoppingContext } from "../../contexts/ShoppingContext"
 import {Product as ProductModel} from '../../model/product';
-import { Types } from "../../reducers/ShoppingReducer"
+import { Types } from '../../redux/actionTypes';
+import shoppingCartActions from '../../redux/actions';
 
 
 const ShoppingCart: FC = (() => {
     
     const { state, dispatch } = useContext(ShoppingContext)
-    const { counter, products } = state
+    const { products } = state
 
     const removeFromCart = (product: ProductModel) => {
-       dispatch({ type: Types.REMOVE_FROM_CART, payload: product })
+      dispatch(shoppingCartActions.removeItemFromCart(product));
     }
 
     let arr_amount = products.map(product => product.quantity * product.price)
