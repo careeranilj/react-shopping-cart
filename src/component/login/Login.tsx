@@ -51,13 +51,20 @@ const Login: FC = (() => {
       if(!_.isEmpty(state.loggedInUser.lastname) && !_.isEmpty(state.loggedInUser.firstname)){
         setLoggedInUser(`${state.loggedInUser.lastname}, ${state.loggedInUser.firstname}`); 
       }
-    }, []);
+    }, [state]);
     
     return (
       <div>
       <div>
         <p>Hello, &nbsp;
-        {loggedInUser ? loggedInUser : 
+        {loggedInUser ? 
+        <> {loggedInUser}<br />
+              <Link
+                component="button"
+                variant="body2"
+                onClick={() => {dispatch(shoppingCartActions.clearLoginDetails()); setLoggedInUser('');}}> 
+                Logout
+              </Link> </> : 
           <><Link
                 component="button"
                 variant="body2"

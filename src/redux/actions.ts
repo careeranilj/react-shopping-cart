@@ -33,7 +33,7 @@ interface FetchItemsFromCartAction extends Action {
 export type ShoppingCartActionType = LoginAction | LogoutAction | FetchLoggedInUserAction| AddToCartAction | RemoveFromCartAction | FetchItemsFromCartAction;
 
 const storeLoginDetails = (data:string) : LoginAction=> ({type:Types.LOGIN, payload:data});
-const clearLoginDetails = () => ({type:Types.LOGOUT});
+const clearLoginDetails = () : LogoutAction => ({type:Types.LOGOUT});
 const fetchLoginDetails = () => ({type:Types.FETCH_LOGGED_IN_USER});
 const addItemToCart = (product: Product): AddToCartAction => ({ type: Types.ADD_TO_CART, payload: product });
 const removeItemFromCart = (product:Product): RemoveFromCartAction => ({type:Types.REMOVE_FROM_CART, payload:product});

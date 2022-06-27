@@ -40,7 +40,7 @@ export const shoppingCartReducer : Reducer<ShoppingCartState, ShoppingCartAction
     case Types.LOGOUT: {
               return {
                 ...state,
-                loggedInUser : {firstname:'', lastname : ''}
+                loggedInUser :''
               };
             }
     case Types.FETCH_LOGGED_IN_USER: {
